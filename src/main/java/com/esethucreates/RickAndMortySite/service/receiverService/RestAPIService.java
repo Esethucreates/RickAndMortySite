@@ -1,20 +1,19 @@
 package com.esethucreates.RickAndMortySite.service.receiverService;
 
 import com.esethucreates.RickAndMortySite.DTO.character.Info;
-import com.esethucreates.RickAndMortySite.DTO.character.ResultsItem;
-import com.esethucreates.RickAndMortySite.DTO.location.LocationResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 
 // This class is to mutate method in RestAPIClient. It doesn't create, it mutates
-public interface RestAPIService {
-    Flux<ResultsItem> returnResultsFromResponse(Integer page);
+public interface RestAPIService<RO> {
+    //    Common object result
     Mono<Info> returnInfoResultsFromResponse(Integer page);
-    Mono<ResultsItem> returnResultItemForCharacter(Integer charId);
-    Flux<LocationResponse> returnLocationFromResponse(Integer page);
-    Mono<List<LocationResponse>> returnLocationResultsFromResponse(Integer page);
+
+    Mono<List<RO>> returnResultsFromResponse(Integer page);
+
+    Mono<RO> returnSingleResultItem(Integer charId);
+
 
 }
