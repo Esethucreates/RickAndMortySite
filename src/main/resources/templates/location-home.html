@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Locations - Rick and Morty Wiki</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+  <style>
+    :root {
+      --rick-green: #97ce4c;
+      --morty-yellow: #f0e14a;
+      --portal-blue: #34cbe3;
+      --space-purple: #622da8;
+      --background-dark: #1a1a1a;
+    }
+
+    body {
+      background-color: var(--background-dark);
+      background-image: radial-gradient(circle, rgba(97, 45, 168, 0.1) 0%, rgba(26, 26, 26, 0.9) 100%);
+      min-height: 100vh;
+    }
+
+    .btn-primary {
+      background-color: var(--rick-green) !important;
+      border-color: var(--rick-green) !important;
+      color: #000 !important;
+    }
+
+    .btn-outline {
+      color: var(--portal-blue) !important;
+      border-color: var(--portal-blue) !important;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--portal-blue) !important;
+      color: #fff !important;
+    }
+
+    .navbar {
+      background-color: rgba(26, 26, 26, 0.9);
+      border-bottom: 2px solid var(--rick-green);
+    }
+
+    .location-card {
+      background: rgba(30, 30, 30, 0.7);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--portal-blue);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .location-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px var(--rick-green);
+    }
+
+    .location-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--rick-green), var(--portal-blue));
+    }
+
+    .location-type {
+      color: var(--morty-yellow);
+    }
+
+    .location-dimension {
+      color: var(--portal-blue);
+    }
+
+    .page-title {
+      text-shadow: 0 0 10px var(--portal-blue);
+    }
+
+    .pagination-btn {
+      transition: all 0.3s ease;
+    }
+
+    .pagination-btn:hover:not(.disabled) {
+      transform: translateY(-2px);
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .dimension-badge {
+      background-color: var(--space-purple);
+      color: white;
+      font-size: 0.75rem;
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+    }
+
+    .residents-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--rick-green);
+      color: black;
+      border-radius: 9999px;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .portal-icon {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--portal-blue) 0%, var(--space-purple) 100%);
+      opacity: 0.2;
+      transition: all 0.3s ease;
+    }
+
+    .location-card:hover .portal-icon {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar mb-6 px-4 shadow-lg">
+  <div class="flex-1">
+    <a href="/" class="text-2xl font-bold text-white">
+      <span style="color: var(--rick-green);">Rick</span> & <span style="color: var(--portal-blue);">Morty</span> Wiki
+    </a>
+  </div>
+  <div class="flex-none gap-2">
+    <a href="/characters" class="btn btn-sm">Characters</a>
+    <a href="/locations" class="btn btn-sm ">Locations</a>
+    <a href="/episodes" class="btn btn-sm">Episodes</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 mb-10">
+  <div class="flex flex-col items-center mb-8">
+    <h1 class="text-4xl font-bold mb-2 text-white page-title">Locations</h1>
+    <p class="text-lg text-gray-300" th:text="${'Total: ' + info.count + ' locations across the multiverse'}">Total: 126 locations across the multiverse</p>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <div class="form-control w-full md:w-auto">
+      <div class="input-group">
+        <input type="text" placeholder="Search locations..." class="input input-bordered bg-gray-800 text-white border-gray-700 w-full md:w-80" />
+        <button class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex gap-2">
+      <select class="select select-bordered bg-gray-800 text-white border-gray-700">
+        <option disabled selected>Filter by dimension</option>
+        <option>All Dimensions</option>
+        <option>Dimension C-137</option>
+        <option>Replacement Dimension</option>
+        <option>Cronenberg Dimension</option>
+        <option>Fantasy Dimension</option>
+      </select>
+
+      <select class="select select-bordered bg-gray-800 text-white border-gray-700">
+        <option disabled selected>Sort by</option>
+        <option>Name (A-Z)</option>
+        <option>Name (Z-A)</option>
+        <option>Residents (High-Low)</option>
+        <option>Residents (Low-High)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Location Grid -->
+  <div class="location-grid mb-10">
+    <div th:each="location : ${locationList}" class="location-card p-5 rounded-lg relative">
+      <div class="residents-count" th:text="${location.residents.size()}">15</div>
+      <div class="portal-icon"></div>
+
+      <h2 class="text-xl font-bold text-white mb-1" th:text="${location.name}">Citadel of Ricks</h2>
+
+      <p class="location-type mb-1">
+        <span class="text-gray-400">Type: </span>
+        <span th:text="${location.type}">Space station</span>
+      </p>
+
+      <p class="location-dimension mb-3">
+        <span class="text-gray-400">Dimension: </span>
+        <span th:text="${location.dimension}">Unknown</span>
+      </p>
+
+      <div class="flex justify-between items-center mt-4">
+        <span class="dimension-badge" th:text="${location.dimension.length() > 20 ? location.dimension.substring(0, 20) + '...' : location.dimension}">Unknown</span>
+        <a th:href="${'/locations/' + location.id}" class="btn btn-sm btn-outline">View Details</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center items-center pb-10">
+    <div class="join grid grid-cols-2 w-full max-w-md">
+      <a th:if="${info.prev != null}" th:href="${'/locations?page=' + (info.prev.substring(info.prev().lastIndexOf('=')-1))}" class="join-item btn btn-outline pagination-btn">Previous page</a>
+      <a th:if="${info.prev == null}" class="join-item btn btn-outline disabled pagination-btn">Previous page</a>
+      <a th:if="${info.next != null}" th:href="${'/locations?page=' + (info.next.substring(info.next.lastIndexOf('=')+1))}" class="join-item btn btn-outline pagination-btn">Next</a>
+      <a th:if="${info.next == null}" class="join-item btn btn-outline disabled pagination-btn">Next</a>
+    </div>
+  </div>
+
+  <!-- Page Info -->
+  <div class="text-center mb-8 text-gray-400">
+    <p th:text="${'Page ' + (info.next != null ? info.next.substring(info.next.lastIndexOf('=')+1)-1 : info.pages) + ' of ' + info.pages}">Page 1 of 7</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer footer-center p-4 bg-gray-900 text-gray-400">
+  <div>
+    <p>Rick & Morty Wiki - Created with Spring Boot, Thymeleaf & DaisyUI</p>
+  </div>
+</footer>
+</body>
+</html>
