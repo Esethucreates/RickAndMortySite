@@ -29,18 +29,17 @@ import java.util.Optional;
 @RequestMapping("/characters")
 public class CharacterController {
 
-    private final RestAPIService apiService;
+    private final RestAPIService<ResultsItem> apiService;
 
-    public CharacterController(RestAPIService apiService) {
+    public CharacterController(RestAPIService<ResultsItem> apiService) {
         this.apiService = apiService;
     }
 
     @GetMapping("")
     public Mono<String> homePage(@RequestParam(name = "page", required = false) Integer page, Model model) {
-
         Integer requestedPage = Optional.ofNullable(page).orElse(0);
 
-        Mono<List<ResultsItem>> characterListMono = apiService.returnResultsFromResponse(requestedPage).collectList();
+        Mono<List<ResultsItem>> characterListMono = apiService.returnResultsFromResponse(requestedPage);
         Mono<Info> infoMono = apiService.returnInfoResultsFromResponse(requestedPage);
 
         return Mono.zip(characterListMono, infoMono)
@@ -52,51 +51,10 @@ public class CharacterController {
     }
 
     @GetMapping("/{charId}")
-    public Mono<String>  getCharacterDetails(@PathVariable Integer charId, Model model ){
-       return apiService.returnResultItemForCharacter(charId)
+    public Mono<String> getCharacterDetails(@PathVariable Integer charId, Model model) {
+        return apiService.returnSingleResultItem(charId)
                 .doOnNext(resultsItem -> model.addAttribute("charInfo", resultsItem))
                 .thenReturn("Character-Page");
 
     }
-
-
-    //    Get all the characters in that page
-//    TODO: Make a zip return a String to be rendered, also add request param for page
-//    @GetMapping("/NotUsingThisOneYet")
-//    public String homePage(Model model) {
-//        // Get data from the services and Set the info
-//        Flux<ResultsItem> characterListMono = apiService.returnResultsFromResponse();
-////        Mono<Info> infoMono = apiService.returnInfoResultsFromResponse();
-//
-////        Convert infoMono to a flux
-//        Flux<Info> fluxConvertedMonoInfo = apiService.returnInfoResultsFromResponse().flatMapMany(Flux::just);
-////        Zip the two together and use ReactiveDataDriver to set them as data drivers
-//        Flux.zip(characterListMono, fluxConvertedMonoInfo)
-//                .doOnNext(tuple2 -> {
-//                    model.addAttribute("characterList", new ReactiveDataDriverContextVariable(tuple2.getT1()));
-//                    model.addAttribute("info", new ReactiveDataDriverContextVariable(tuple2.getT2()));
-//                }).subscribe();
-//
-//        return "home-page";
-//    }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
