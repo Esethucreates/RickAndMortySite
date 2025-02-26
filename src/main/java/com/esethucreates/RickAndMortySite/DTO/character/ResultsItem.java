@@ -1,4 +1,4 @@
-package com.esethucreates.RickAndMortySite.DTO;
+package com.esethucreates.RickAndMortySite.DTO.character;
 
 import java.util.List;
 
