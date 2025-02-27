@@ -1,7 +1,8 @@
-package com.esethucreates.RickAndMortySite.controllers;
+package com.esethucreates.RickAndMortySite.controllers.Impl;
 
 import com.esethucreates.RickAndMortySite.DTO.response.Info;
 import com.esethucreates.RickAndMortySite.DTO.character.CharacterResponse;
+import com.esethucreates.RickAndMortySite.controllers.ControllerInterface;
 import com.esethucreates.RickAndMortySite.service.receiverService.RestAPIService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -24,7 +25,7 @@ import java.util.Optional;
 // All you had to do was change RestController to Controller due to the above reason
 @RestController
 @RequestMapping("/api/characters")
-public class CharacterController implements ControllerInterface<CharacterResponse>{
+public class CharacterController implements ControllerInterface<CharacterResponse> {
 
     private final RestAPIService<CharacterResponse> apiService;
     public CharacterController(RestAPIService<CharacterResponse> apiService) {

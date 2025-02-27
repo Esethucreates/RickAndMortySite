@@ -1,7 +1,8 @@
-package com.esethucreates.RickAndMortySite.controllers;
+package com.esethucreates.RickAndMortySite.controllers.Impl;
 
 import com.esethucreates.RickAndMortySite.DTO.episode.EpisodeResponse;
 import com.esethucreates.RickAndMortySite.DTO.response.Info;
+import com.esethucreates.RickAndMortySite.controllers.ControllerInterface;
 import com.esethucreates.RickAndMortySite.service.receiverService.Impl.EpisodeAPIService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/episodes")
-public class EpisodeController implements ControllerInterface<EpisodeResponse>{
+public class EpisodeController implements ControllerInterface<EpisodeResponse> {
     private final EpisodeAPIService apiService;
 
 
