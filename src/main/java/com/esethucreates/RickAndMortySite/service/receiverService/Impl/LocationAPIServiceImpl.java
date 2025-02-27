@@ -1,7 +1,7 @@
 package com.esethucreates.RickAndMortySite.service.receiverService.Impl;
 
-import com.esethucreates.RickAndMortySite.DTO.character.Info;
-import com.esethucreates.RickAndMortySite.DTO.character.Response;
+import com.esethucreates.RickAndMortySite.DTO.response.Info;
+import com.esethucreates.RickAndMortySite.DTO.response.Response;
 import com.esethucreates.RickAndMortySite.DTO.location.LocationResponse;
 import com.esethucreates.RickAndMortySite.service.client.Impl.LocationEndpointClient;
 import com.esethucreates.RickAndMortySite.service.receiverService.RestAPIService;
