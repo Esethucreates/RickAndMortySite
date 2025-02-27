@@ -1,8 +1,9 @@
-package com.esethucreates.RickAndMortySite.controllers;
+package com.esethucreates.RickAndMortySite.controllers.Impl;
 
 
 import com.esethucreates.RickAndMortySite.DTO.location.LocationResponse;
 import com.esethucreates.RickAndMortySite.DTO.response.Info;
+import com.esethucreates.RickAndMortySite.controllers.ControllerInterface;
 import com.esethucreates.RickAndMortySite.service.receiverService.Impl.LocationAPIServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
