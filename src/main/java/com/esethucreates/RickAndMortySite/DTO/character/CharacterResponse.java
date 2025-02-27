@@ -2,7 +2,7 @@ package com.esethucreates.RickAndMortySite.DTO.character;
 
 import java.util.List;
 
-public record ResultsItem(
+public record CharacterResponse(
 	String image,
 	String gender,
 	String species,
