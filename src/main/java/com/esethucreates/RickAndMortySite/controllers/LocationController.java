@@ -1,52 +1,46 @@
 package com.esethucreates.RickAndMortySite.controllers;
 
 
-import com.esethucreates.RickAndMortySite.DTO.character.Info;
 import com.esethucreates.RickAndMortySite.DTO.location.LocationResponse;
+import com.esethucreates.RickAndMortySite.DTO.response.Info;
 import com.esethucreates.RickAndMortySite.service.receiverService.Impl.LocationAPIServiceImpl;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/locations")
-public class LocationController {
-    private final LocationAPIServiceImpl locationAPIService;
+@RestController
+@RequestMapping("/api/locations")
+public class LocationController implements ControllerInterface<LocationResponse> {
+    private final LocationAPIServiceImpl apiService;
 
 
-    public LocationController(LocationAPIServiceImpl locationAPIService) {
-        this.locationAPIService = locationAPIService;
+    public LocationController(LocationAPIServiceImpl apiService) {
+        this.apiService = apiService;
     }
 
 
     @GetMapping("")
-    public Mono<String> getALlLocation(
-            @RequestParam(name = "page", required = false) Integer page, Model model
-    ){
-        Integer requestedPage = Optional.ofNullable(page).orElse(0);
-        Mono<List<LocationResponse>> locationResponse = locationAPIService.returnResultsFromResponse(requestedPage);
-        Mono<Info> infoMono = locationAPIService.returnInfoResultsFromResponse(requestedPage);
+    public Mono<Map<String, Object>> findAll(@RequestParam(name = "page", required = false) Integer page) {
+        Integer requestedPage = Optional.ofNullable(page).orElse(1);
 
+        Mono<List<LocationResponse>> locationResponse = apiService.returnResultsFromResponse(requestedPage);
+        Mono<Info> infoMono = apiService.returnInfoResultsFromResponse(requestedPage);
 
         return Mono.zip(locationResponse, infoMono)
-                .doOnNext( objects -> {
-                    model.addAttribute("locationList", objects.getT1());
-                    model.addAttribute("info", objects.getT2());
-                }).thenReturn("location-home");
-
+                .map(objects -> {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("locationList", objects.getT1());
+                    response.put("info", objects.getT2());
+                    return response;
+                });
     }
 
     @GetMapping("/{locId}")
-    public Mono<String> getSingleLocation(@PathVariable Integer locId, Model model){
-        return locationAPIService.returnSingleResultItem(locId)
-                .doOnNext(locationResponse -> model.addAttribute("locationInfo", locationResponse))
-                .thenReturn("location-page");
+    public Mono<LocationResponse> findById(@PathVariable Integer locId) {
+        return apiService.returnSingleResultItem(locId);
     }
 }
