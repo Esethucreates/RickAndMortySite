@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { characterService } from "@/services/API";
+import { useRoute, useRouter } from "vue-router";
 
 // Reactive state
 const characters = ref([]);
@@ -8,9 +9,10 @@ const info = ref({});
 const isLoading = ref(true);
 const error = ref(null);
 const currentPage = ref(0);
+const router = useRouter();
 
 // Fetch characters data
-const fetchCharacters = async (page = 0) => {
+const fetchCharacters = async (page = 1) => {
   isLoading.value = true;
   try {
     const response = await characterService.getAllCharacters(page);
@@ -33,9 +35,13 @@ const goToNextPage = () => {
 };
 
 const goToPrevPage = () => {
-  if (info.value.prev !== null && currentPage.value > 0) {
+  if (info.value.prev !== null && currentPage.value > 1) {
     fetchCharacters(currentPage.value - 1);
   }
+};
+
+const goToDetails = (id) => {
+  router.push(`/characters/${id}`);
 };
 
 // Load characters on component mount
@@ -89,6 +95,12 @@ onMounted(() => {
             <p class="origin-label">Origin:</p>
             <p>{{ character.origin?.name }}</p>
           </div>
+
+          <div class="episode-actions">
+            <button @click="goToDetails(character.id)" class="view-details-btn">
+              View Details
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -108,12 +120,12 @@ onMounted(() => {
     >
       <button
         @click="goToPrevPage"
-        :disabled="!info.prev || currentPage === 0"
+        :disabled="!info.prev || currentPage === 1"
         class="pagination-btn"
       >
         Previous
       </button>
-      <span class="page-info">Page {{ currentPage + 1 }}</span>
+      <span class="page-info">Page {{ currentPage }}</span>
       <button
         @click="goToNextPage"
         :disabled="!info.next"
@@ -126,6 +138,21 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.view-details-btn {
+  padding: 6px 12px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-details-btn:hover {
+  background-color: #27ae60;
+}
+
 .characters-container {
   max-width: 1200px;
   margin: 0 auto;
