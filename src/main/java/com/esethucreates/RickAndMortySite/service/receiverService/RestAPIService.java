@@ -1,6 +1,6 @@
 package com.esethucreates.RickAndMortySite.service.receiverService;
 
-import com.esethucreates.RickAndMortySite.DTO.character.Info;
+import com.esethucreates.RickAndMortySite.DTO.response.Info;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
