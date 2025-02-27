@@ -4,10 +4,13 @@ import CharactersView from "@/components/CharactersView.vue";
 import CharacterDetailView from "@/components/CharacterDetailView.vue";
 import LocationsView from "@/components/LocationsView.vue";
 import LocationDetailView from "@/components/LocationDetailView.vue";
+import EpisodesView from "@/components/EpisodesView.vue";
+import EpisodeDetailsView from "@/components/EpisodeDetailsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Characters
     {
       path: "/characters",
       name: "characters",
@@ -25,6 +28,7 @@ const router = createRouter({
         title: "Character Details",
       },
     },
+    // Locations
     {
       path: "/locations",
       name: "locations",
@@ -42,6 +46,25 @@ const router = createRouter({
         title: "Location Details",
       },
     },
+    // Episodes
+    {
+      path: "/episodes",
+      name: "episodes",
+      component: EpisodesView,
+      meta: {
+        title: "Rick and Morty - Episodes",
+      },
+    },
+    {
+      path: "/episodes/:id",
+      name: "episode-detail",
+      component: EpisodeDetailsView,
+      props: true,
+      meta: {
+        title: "Episode Details",
+      },
+    },
+
   ],
 });
 
