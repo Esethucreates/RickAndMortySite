@@ -10,7 +10,7 @@ const api = axios.create({
 });
 
 export const characterService = {
-  getAllCharacters(page = 0) {
+  getAllCharacters(page = 1) {
     return api.get(`/characters?page=${page}`);
   },
   getCharacter(id) {
@@ -19,11 +19,21 @@ export const characterService = {
 };
 
 export const locationService = {
-  getAllLocations(page = 0) {
+  getAllLocations(page = 1) {
     return api.get(`/locations?page=${page}`);
   },
   getLocation(id) {
     return api.get(`/locations/${id}`);
+  },
+};
+
+export const episodeService = {
+  getAllEpisodes(page = 1) {
+    return api.get(`/episodes?page=${page}`);
+  },
+
+  getEpisode(id) {
+    return api.get(`/episodes/${id}`);
   },
 };
 
