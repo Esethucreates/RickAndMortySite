@@ -1,9 +1,9 @@
 package com.esethucreates.RickAndMortySite.service.receiverService.Impl;
 
 
-import com.esethucreates.RickAndMortySite.DTO.character.Info;
-import com.esethucreates.RickAndMortySite.DTO.character.Response;
-import com.esethucreates.RickAndMortySite.DTO.character.ResultsItem;
+import com.esethucreates.RickAndMortySite.DTO.response.Info;
+import com.esethucreates.RickAndMortySite.DTO.response.Response;
+import com.esethucreates.RickAndMortySite.DTO.character.CharacterResponse;
 import com.esethucreates.RickAndMortySite.service.client.Impl.CharacterEndpointClient;
 import com.esethucreates.RickAndMortySite.service.receiverService.RestAPIService;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Service
-public class CharacterAPIServiceImpl implements RestAPIService<ResultsItem> {
+public class CharacterAPIServiceImpl implements RestAPIService<CharacterResponse> {
 
     private final CharacterEndpointClient characterClient;
 
@@ -26,7 +26,7 @@ public class CharacterAPIServiceImpl implements RestAPIService<ResultsItem> {
 
     //    Return the flux resultItems
     @Override
-    public Mono<List<ResultsItem>> returnResultsFromResponse(Integer page) {
+    public Mono<List<CharacterResponse>> returnResultsFromResponse(Integer page) {
 
         return characterClient.returnPageResponse(page)
                 .map(Response::results)
@@ -42,7 +42,7 @@ public class CharacterAPIServiceImpl implements RestAPIService<ResultsItem> {
     }
 
     @Override
-    public Mono<ResultsItem> returnSingleResultItem(Integer charId) {
+    public Mono<CharacterResponse> returnSingleResultItem(Integer charId) {
         return characterClient.returnPageResultsObject(charId);
     }
 }
