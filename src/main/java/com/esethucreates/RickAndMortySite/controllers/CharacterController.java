@@ -1,17 +1,14 @@
 package com.esethucreates.RickAndMortySite.controllers;
 
-import com.esethucreates.RickAndMortySite.DTO.character.Info;
-import com.esethucreates.RickAndMortySite.DTO.character.ResultsItem;
+import com.esethucreates.RickAndMortySite.DTO.response.Info;
+import com.esethucreates.RickAndMortySite.DTO.character.CharacterResponse;
 import com.esethucreates.RickAndMortySite.service.receiverService.RestAPIService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -25,36 +22,33 @@ import java.util.Optional;
  *  */
 
 // All you had to do was change RestController to Controller due to the above reason
-@Controller
-@RequestMapping("/characters")
-public class CharacterController {
+@RestController
+@RequestMapping("/api/characters")
+public class CharacterController implements ControllerInterface<CharacterResponse>{
 
-    private final RestAPIService<ResultsItem> apiService;
-
-    public CharacterController(RestAPIService<ResultsItem> apiService) {
+    private final RestAPIService<CharacterResponse> apiService;
+    public CharacterController(RestAPIService<CharacterResponse> apiService) {
         this.apiService = apiService;
     }
 
     @GetMapping("")
-    public Mono<String> homePage(@RequestParam(name = "page", required = false) Integer page, Model model) {
-        Integer requestedPage = Optional.ofNullable(page).orElse(0);
+    public Mono<Map<String, Object>> findAll(@RequestParam(name = "page", required = false) Integer page){
+        Integer requestedPage = Optional.ofNullable(page).orElse(1);
 
-        Mono<List<ResultsItem>> characterListMono = apiService.returnResultsFromResponse(requestedPage);
+        Mono<List<CharacterResponse>> characterListMono = apiService.returnResultsFromResponse(requestedPage);
         Mono<Info> infoMono = apiService.returnInfoResultsFromResponse(requestedPage);
 
         return Mono.zip(characterListMono, infoMono)
-                .doOnNext(tuple -> {
-                    model.addAttribute("characterList", tuple.getT1());
-                    model.addAttribute("info", tuple.getT2());
-                })
-                .thenReturn("home-page");
+                .map(tuple -> {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("characterList", tuple.getT1());
+                    response.put("info", tuple.getT2());
+                    return response;
+                });
     }
 
     @GetMapping("/{charId}")
-    public Mono<String> getCharacterDetails(@PathVariable Integer charId, Model model) {
-        return apiService.returnSingleResultItem(charId)
-                .doOnNext(resultsItem -> model.addAttribute("charInfo", resultsItem))
-                .thenReturn("Character-Page");
-
+    public Mono<CharacterResponse> findById(@PathVariable Integer charId) {
+        return apiService.returnSingleResultItem(charId);
     }
 }
