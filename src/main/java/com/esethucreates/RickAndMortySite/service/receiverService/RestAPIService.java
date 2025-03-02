@@ -15,5 +15,7 @@ public interface RestAPIService<RO> {
 
     Mono<RO> returnSingleResultItem(Integer charId);
 
+    Mono<List<RO>> returnListOfCharacters(List<Integer> ListIds);
+
 
 }
