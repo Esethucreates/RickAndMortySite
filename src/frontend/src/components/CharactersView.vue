@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { characterService } from "@/services/API";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 // Reactive state
 const characters = ref([]);
