@@ -1,0 +1,20 @@
+.episode-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .view-details-btn {
+    padding: 6px 12px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .view-details-btn:hover {
+    background-color: #27ae60;
+  }
+  
