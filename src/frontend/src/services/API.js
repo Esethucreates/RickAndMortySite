@@ -10,6 +10,10 @@ const api = axios.create({
 });
 
 export const characterService = {
+  getFeaturedCharacters() {
+    return api.get("");
+  },
+
   getAllCharacters(page = 1) {
     return api.get(`/characters?page=${page}`);
   },
