@@ -58,6 +58,10 @@ const extractIdFromUrl = (url) => {
   return parts[parts.length - 1];
 };
 
+const goTo = (id) => {
+  router.push(`/characters/${id}`);
+};
+
 onMounted(() => {
   fetchEpisodeData();
 });
@@ -77,7 +81,7 @@ onMounted(() => {
       <h1>{{ episode.name }}</h1>
       <div class="episode-info">
         <span class="episode-code">{{ episode.episode }}</span>
-        <span class="air-date">Aired: {{ formatDate(episode.airDate) }}</span>
+        <span class="air-date">Aired: {{ formatDate(episode.air_date) }}</span>
       </div>
 
       <div class="detail-section">
@@ -93,17 +97,16 @@ onMounted(() => {
           <p>No characters found for this episode.</p>
         </div>
 
-        <ul v-else class="characters-list">
-          <li
+        <div v-else class="characters-list">
+          <div
             v-for="(character, index) in episode.characters"
             :key="index"
             class="character-item"
+            @click="goTo(extractIdFromUrl(character))"
           >
-            <router-link :to="`/characters/${extractIdFromUrl(character)}`">
-              Character {{ extractIdFromUrl(character) }}
-            </router-link>
-          </li>
-        </ul>
+            Character {{ extractIdFromUrl(character) }}
+          </div>
+        </div>
       </div>
 
       <div class="episode-actions">
@@ -205,18 +208,24 @@ onMounted(() => {
 }
 
 .characters-list {
-  list-style-type: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  margin-top: 10px;
   gap: 12px;
 }
 
 .character-item {
-  padding: 12px;
-  background-color: #fff3e0;
+  background-color: #89bb16;
+  color: #ffffff;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-size: 14px;
-  border-left: 3px solid #ff9800;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.character-item:hover {
+  background-color: #455f07;
 }
 
 .no-characters {
