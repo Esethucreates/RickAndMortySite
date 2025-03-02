@@ -33,6 +33,11 @@ public class LocationAPIServiceImpl implements RestAPIService<LocationResponse> 
     }
 
     @Override
+    public Mono<List<LocationResponse>> returnListOfCharacters(List<Integer> ListIds) {
+        return null;
+    }
+
+    @Override
     public Mono<Info> returnInfoResultsFromResponse(Integer page) {
         return locationEndpointClient.returnPageResponse(page)
                 .map(Response::info);

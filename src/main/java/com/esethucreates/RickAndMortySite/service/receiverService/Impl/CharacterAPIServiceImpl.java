@@ -45,4 +45,12 @@ public class CharacterAPIServiceImpl implements RestAPIService<CharacterResponse
     public Mono<CharacterResponse> returnSingleResultItem(Integer charId) {
         return characterClient.returnPageResultsObject(charId);
     }
+
+    @Override
+    public Mono<List<CharacterResponse>> returnListOfCharacters(List<Integer> ListIds) {
+        return characterClient.getCharacterListById(ListIds)
+                .collectList();
+    }
+
+
 }
