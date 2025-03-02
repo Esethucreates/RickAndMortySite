@@ -42,6 +42,10 @@ const extractIdFromUrl = (url) => {
   return parts[parts.length - 1];
 };
 
+const goTo = (id) => {
+  router.push(`/characters/${id}`);
+};
+
 onMounted(() => {
   fetchLocationData();
 });
@@ -84,16 +88,16 @@ onMounted(() => {
           <p>No residents found.</p>
         </div>
 
-        <ul v-else class="residents-list">
-          <li v-for="(resident, index) in location.residents" :key="index">
-            <router-link
-              :to="`/characters/${extractIdFromUrl(resident)}`"
-              class="character-link"
-            >
-              Character # {{ extractIdFromUrl(resident) }}
-            </router-link>
-          </li>
-        </ul>
+        <div v-else class="residents-list">
+          <div
+            v-for="(resident, index) in location.residents"
+            :key="index"
+            class="resident-item"
+            @click="goTo(extractIdFromUrl(resident))"
+          >
+            Character # {{ extractIdFromUrl(resident) }}
+          </div>
+        </div>
       </div>
 
       <div class="location-actions">
@@ -173,18 +177,24 @@ onMounted(() => {
 }
 
 .residents-list {
-  list-style-type: none;
-  padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin-top: 10px;
   gap: 10px;
 }
 
-.residents-list li {
-  padding: 10px 15px;
+.resident-item {
   background-color: #e3f2fd;
+  color: #3a3838;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-size: 14px;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.resident-item:hover {
+  background-color: #5bace6;
 }
 
 .no-residents {
