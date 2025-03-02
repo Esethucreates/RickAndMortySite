@@ -39,4 +39,9 @@ public class EpisodeAPIService implements RestAPIService<EpisodeResponse> {
     public Mono<EpisodeResponse> returnSingleResultItem(Integer charId) {
         return episodeEndpointClient.returnPageResultsObject(charId);
     }
+
+    @Override
+    public Mono<List<EpisodeResponse>> returnListOfCharacters(List<Integer> ListIds) {
+        return null;
+    }
 }
