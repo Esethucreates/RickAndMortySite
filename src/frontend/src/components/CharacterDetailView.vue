@@ -42,6 +42,22 @@ const goBackToList = () => {
   router.push("/characters");
 };
 
+const goTo = (id) => {
+  router.push(`/episodes/${id}`);
+};
+
+const extractIdFromUrl = (url) => {
+  // Check if url is a string and not empty
+  if (!url || typeof url !== "string") return "";
+
+  // Remove trailing slash if present
+  const cleanUrl = url.endsWith("/") ? url.slice(0, -1) : url;
+
+  // Extract the ID from the end of the URL
+  const parts = cleanUrl.split("/");
+  return parts[parts.length - 1];
+};
+
 onMounted(() => {
   fetchCharacter();
 });
@@ -103,9 +119,15 @@ onMounted(() => {
             </div>
             <div class="detail-row">
               <span class="detail-label">Last known location:</span>
-              <span class="detail-value">{{
-                character.location?.name || "Unknown"
-              }}</span>
+              <span class="detail-value link-decorate">
+                <router-link
+                  :to="`/locations/${extractIdFromUrl(
+                    character.location?.url || null
+                  )}`"
+                >
+                  {{ character.location?.name || "Unknown" }}
+                </router-link>
+              </span>
             </div>
           </div>
         </div>
@@ -117,30 +139,16 @@ onMounted(() => {
           <h2 class="section-title">Episodes</h2>
           <div class="section-content">
             <p>Appeared in {{ character.episode.length }} episode(s):</p>
+
             <div class="episodes-list">
               <div
                 v-for="(episodeUrl, index) in character.episode"
                 :key="index"
+                @click="goTo(getEpisodeNumber(episodeUrl))"
                 class="episode-item"
               >
                 Episode {{ getEpisodeNumber(episodeUrl) }}
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="character-section">
-          <h2 class="section-title">Additional Info</h2>
-          <div class="section-content">
-            <div class="detail-row">
-              <span class="detail-label">Created:</span>
-              <span class="detail-value">{{
-                new Date(character.created).toLocaleDateString()
-              }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">API ID:</span>
-              <span class="detail-value">{{ character.id }}</span>
             </div>
           </div>
         </div>
@@ -348,6 +356,10 @@ onMounted(() => {
   border-radius: 4px;
   text-align: center;
   font-size: 0.9rem;
+  cursor: pointer;
+}
+.episode-item:hover {
+  background-color: #166da7;
 }
 
 @media (max-width: 768px) {
@@ -368,6 +380,10 @@ onMounted(() => {
 
   .detail-label {
     margin-bottom: 5px;
+  }
+
+  .link-decorate {
+    text-decoration: none;
   }
 }
 </style>
