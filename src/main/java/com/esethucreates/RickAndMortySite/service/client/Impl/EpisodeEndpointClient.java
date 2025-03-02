@@ -6,7 +6,10 @@ import com.esethucreates.RickAndMortySite.service.client.RetrieveCharacterObject
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 
 @Service
@@ -33,5 +36,10 @@ public class EpisodeEndpointClient implements RetrieveCharacterObject<Response<E
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/episode/{id}").build(id))
                 .retrieve().bodyToMono(EpisodeResponse.class);
+    }
+
+    @Override
+    public Flux<EpisodeResponse> getCharacterListById(List<Integer> listId) {
+        return null;
     }
 }
