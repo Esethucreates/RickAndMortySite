@@ -26,7 +26,7 @@ export default defineConfig({
   },
   // If you want to build the Vue app to be served by Spring Boot
   build: {
-    outDir: "../src/main/resources/static",
+    outDir: "C:/Users/Esethu/Desktop/Web_Coding_Projects/RickAndMortySite/src/main/resources/static",
     emptyOutDir: true,
   },
 });
