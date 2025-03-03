@@ -87,13 +87,6 @@ This project demonstrates my ability to:
    mvn spring-boot:run
    ```
 
-3. Frontend Setup
-   ```
-   cd frontend
-   npm install
-   npm run build
-   ```
-
 4. Open your browser and navigate to `http://localhost:8080`
 
 ## Contact and Contributions
