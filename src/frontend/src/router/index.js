@@ -38,6 +38,15 @@ const router = createRouter({
         title: "Character Details",
       },
     },
+    {
+      path: "/characters/:pathMatch(.*)*",
+      name: "not-found",
+      component: PageNotFound,
+      meta: {
+        title: "Page not found!",
+      },
+    },
+
     // Locations
     {
       path: "/locations",
@@ -56,6 +65,15 @@ const router = createRouter({
         title: "Location Details",
       },
     },
+    {
+      path: "/locations/:pathMatch(.*)*",
+      name: "not-found",
+      component: PageNotFound,
+      meta: {
+        title: "Page not found!",
+      },
+    },
+
     // Episodes
     {
       path: "/episodes",
@@ -72,6 +90,14 @@ const router = createRouter({
       props: true,
       meta: {
         title: "Episode Details",
+      },
+    },
+    {
+      path: "/episodes/:pathMatch(.*)*",
+      name: "not-found",
+      component: PageNotFound,
+      meta: {
+        title: "Page not found!",
       },
     },
 
