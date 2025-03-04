@@ -1,15 +1,11 @@
-FROM maven:3.8-openjdk-18-slim AS build
+# Build stage
+FROM eclipse-temurin:21
 WORKDIR /app
 
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
-COPY pom.xml .
+COPY src ./src
 
-# Build both frontend and backend
-RUN mvn dependency:go-offline
-
-# Run stage
-FROM openjdk:18-jdk-slim
-WORKDIR /app
-COPY  target/*.jar app.jar
 CMD ["./mvnw", "spring-boot:run"]
-ENTRYPOINT ["java", "-jar", "app.jar"]
