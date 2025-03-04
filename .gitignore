@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+## Node
+/src/frontend/node_modules
+/src/frontend/node
+
 ### STS ###
 .apt_generated
 .classpath
