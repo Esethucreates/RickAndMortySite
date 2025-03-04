@@ -1,11 +1,11 @@
 # Build stage
-FROM maven:3.9.5-openjdk-21
+FROM maven:3.9.8-eclipse-temurin-21 AS build
 COPY . .
-RUN mvn clean package -DskipTests
+RUN mvn clean install -DskipTests
 
 
-FROM openjdk:21-slim
-COPY --from=build /target/RickAndMortySite-0.0.1-SNAPSHOT.jar wiki.jar
+FROM openjdk:21
+COPY --from=build /target/RickAndMortySite-0.0.1.jar wiki.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","wiki.jar"]
 
