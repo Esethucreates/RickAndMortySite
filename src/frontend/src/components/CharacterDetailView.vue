@@ -47,13 +47,10 @@ const goTo = (id) => {
 };
 
 const extractIdFromUrl = (url) => {
-  // Check if url is a string and not empty
   if (!url || typeof url !== "string") return "";
 
-  // Remove trailing slash if present
   const cleanUrl = url.endsWith("/") ? url.slice(0, -1) : url;
 
-  // Extract the ID from the end of the URL
   const parts = cleanUrl.split("/");
   return parts[parts.length - 1];
 };
