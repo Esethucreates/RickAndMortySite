@@ -6,7 +6,7 @@ A comprehensive web application built with Spring Boot and Vue.js that provides 
 
 ## Live Demo
 
-**[Visit the Rick and Morty Wiki](https://placeholder-url.com)**
+**[Visit the Rick and Morty Wiki](https://rickandmortysite.onrender.com/)**
 
 ## Overview
 
